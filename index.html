@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skin Disease Detection</title>
+  <!-- Google Fonts and FontAwesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables for Color Palette */
+    :root {
+      --primary-color: #6C63FF;
+      --secondary-color: #48A9A6;
+      --accent-color: #FF6584;
+      --bg-color: #F0F4F8;
+      --nav-bg: #3A3F51;
+      --text-color: #333;
+      --light-text: #777;
+    }
+    
+    /* Global Reset & Base Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      /* background-color: var(--bg-color); */
+      background-image: url("https://www.ndph.ox.ac.uk/images/research/virus/responsive_image?ratio=image&scale=w760");
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: var(--text-color);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    
+    /* Navigation Bar */
+    nav {
+      /* background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); */
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      background: black;
+    }
+    nav .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+    }
+    nav .logo {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    nav ul {
+      display: flex;
+      gap: 25px;
+    }
+    nav ul li {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+    nav ul li:hover {
+      color: var(--accent-color);
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: url('https://source.unsplash.com/1600x900/?skin,dermatology') no-repeat center center/cover;
+      height: 90vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      max-width: 800px;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    }
+    .hero .btn {
+      background: var(--accent-color);
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .hero .btn:hover {
+      background: #e04e70;
+    }
+    
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    
+    /* Prediction Section */
+    .prediction-section {
+      background: #fff;
+      border-radius: 15px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .prediction-section form {
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    .prediction-section input[type="file"] {
+      width: 100%;
+      padding: 15px;
+      border: 2px dashed var(--primary-color);
+      border-radius: 10px;
+      background: #fafafa;
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+    .prediction-section input[type="file"]:hover {
+      border-color: var(--accent-color);
+    }
+    .prediction-section button {
+      margin-top: 20px;
+      background: var(--primary-color);
+      border: none;
+      color: #fff;
+      padding: 15px 40px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .prediction-section button:hover {
+      background: var(--secondary-color);
+    }
+    .result-card {
+      margin-top: 30px;
+      background: #fff;
+      border-left: 5px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 20px 30px;
+      text-align: left;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .result-card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      font-size: 1.8rem;
+    }
+    .result-card p {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .result-card img {
+      display: block;
+      margin: 20px auto;
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .info-section {
+      margin-top: 20px;
+    }
+    .info-section h4 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 5px;
+    }
+    .info-section ul {
+      list-style: disc;
+      margin-left: 20px;
+      font-size: 0.95rem;
+      color: var(--light-text);
+    }
+    
+    /* Diseases Section */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .card-header {
+      background: var(--primary-color);
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .card-body {
+      padding: 20px;
+      color: var(--text-color);
+    }
+    .card-body p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+    
+    /* About Section */
+    .about {
+      text-align: center;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      margin-top: 60px;
+    }
+    .about h2 { font-size: 2rem; margin-bottom: 20px; color: var(--primary-color); }
+    .about p {
+      font-size: 1.1rem;
+      color: var(--light-text);
+      max-width: 800px;
+      margin: auto;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><i class="fa-solid fa-heart-circle-check"></i> SkinCare AI</div>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#prediction">Prediction</a></li>
+        <li><a href="#diseases">Diseases</a></li>
+       
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Skin Disease Detection</h1>
+      <p>
+        Empowering you with cutting-edge AI insights to diagnose and manage your skin health.
+        Explore our platform for personalized recommendations, actionable tips, and comprehensive information
+        to help you achieve a healthier, more radiant complexion.
+      </p>
+      <button class="btn" onclick="document.getElementById('prediction').scrollIntoView({behavior: 'smooth'})">Get Started</button>
+    </div>
+  </section>
+  
+  <!-- Prediction Section -->
+  <section id="prediction" class="container">
+    <h2 style="text-align:center; margin-bottom: 20px; color: #F0F4F8;">Predict Your Skin Condition</h2>
+    <div class="prediction-section">
+      <form method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Analyze</button>
+      </form>
+      {% if predicted_label %}
+      <div class="result-card">
+        <h3>Prediction Result</h3>
+        <p><strong>Disease:</strong> {{ predicted_label }}</p>
+        <p><strong>Confidence:</strong> {{ confidence|round(2) }}</p>
+        <img src="{{ image_path }}" alt="Uploaded Image">
+        <div class="info-section">
+          <h4>Salts</h4>
+          <ul>
+            {% for salt in additional_info.Salts %}
+              <li>{{ salt }}</li>
+            {% endfor %}
+          </ul>
+          <br>
+          <h4>Medicines</h4>
+          <ul>
+            {% for med in additional_info.Medicines %}
+              <li>{{ med }}</li>
+            {% endfor %}
+          </ul>
+          <br>
+          <h4>Precautions</h4>
+          <ul>
+            {% for precaution in additional_info.Precautions %}
+              <li>{{ precaution }}</li>
+            {% endfor %}
+          </ul>
+          <br>
+          <h4>Recommendations</h4>
+          <ul>
+            {% for rec in additional_info.Recommendations %}
+              <li>{{ rec }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  
+  <!-- Diseases Section -->
+  <section id="diseases" class="container">
+    <h2 style="text-align:center; margin-bottom: 20px; color:#F0F4F8;">Skin Disease Information</h2>
+    <div class="cards">
+      <!-- Card for Acitinic Keratosis -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-sun"></i> Acitinic Keratosis</div>
+        <div class="card-body">
+          <p>Rough, scaly patches on sun-exposed areas. Early detection is key.</p>
+          <p><strong>Tip:</strong> Regular checkups and diligent sunscreen usage.</p>
+        </div>
+      </div>
+      <!-- Card for Basal Cell Carcinoma -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-user-doctor"></i> Basal Cell Carcinoma</div>
+        <div class="card-body">
+          <p>The most common form of skin cancer caused by UV exposure. Timely treatment is essential.</p>
+          <p><strong>Tip:</strong> Protect your skin and monitor any changes.</p>
+        </div>
+      </div>
+      <!-- Card for Melanoma -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-notes-medical"></i> Melanoma</div>
+        <div class="card-body">
+          <p>The most aggressive skin cancer. Early diagnosis improves treatment success.</p>
+          <p><strong>Tip:</strong> Regularly inspect your moles and consult a specialist if needed.</p>
+        </div>
+      </div>
+      <!-- Card for Nevus -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-eye"></i> Nevus</div>
+        <div class="card-body">
+          <p>Common moles that are typically benign but should be monitored for changes.</p>
+          <p><strong>Tip:</strong> Stay alert to any variations and get periodic evaluations.</p>
+        </div>
+      </div>
+      <!-- Card for Pigmented Benign Keratosis -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-heart"></i> Pigment Benign Keratosis</div>
+        <div class="card-body">
+          <p>Non-cancerous growths that appear as brown, black, or tan lesions. Generally harmless.</p>
+          <p><strong>Tip:</strong> Maintain a good skincare routine and schedule regular checkups.</p>
+        </div>
+      </div>
+      <!-- Card for Seborrheic Keratosis -->
+      <div class="card">
+        <div class="card-header"><i class="fa-solid fa-hand-holding-medical"></i> Seborrheic Keratosis</div>
+        <div class="card-body">
+          <p>Benign skin growths that often appear "stuck-on" the skin surface. Usually painless.</p>
+          <p><strong>Tip:</strong> Use gentle skincare and avoid picking at the lesions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <script>
+    // Custom JavaScript for additional interactivity can be added here.
+  </script>
+</body>
+</html>
